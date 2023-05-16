@@ -1,6 +1,7 @@
 import json
 import site_analyzer
 import verifications
+import os
 
 tag_list_single = ('header', 'nav', 'main', 'article', 'section', 'aside', 'footer',
                    'form', 'label', 'table', 'caption', 'h2', 'h3', 'h4', 'h5', 'h6',
@@ -28,9 +29,12 @@ if verifications.check_user_input_source(user_input) == '1':
 
         json_object = json.dumps(result_dict)
 
-        file = open('result.txt', 'w')
+        file = open('result.json', 'w')
         file.write(json_object)
         file.close()
+
+        input(f'Сайт разложен по тегам в файл по пути {os.getcwd()}'
+              f'\nПарсер закончил работу. Нажмите Enter...')
 
 elif verifications.check_user_input_source(user_input) == '2':
     print('Введите путь к файлу, который нужно считать и проанализировать.')
@@ -48,8 +52,9 @@ elif verifications.check_user_input_source(user_input) == '2':
 
         json_object = json.dumps(result_dict)
 
-        file = open('result.txt', 'w')
+        file = open('result.json', 'w')
         file.write(json_object)
         file.close()
 
-
+    input(f'Файл разложен по тегам в другой файл по пути {os.getcwd()}'
+          f'\nПарсер закончил работу. Нажмите Enter...')
