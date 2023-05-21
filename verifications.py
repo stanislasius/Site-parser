@@ -1,6 +1,8 @@
 from validators import url
 import os
+from rich.console import Console
 
+rich_console = Console().print
 
 def check_user_input_source(data_to_check):
     if data_to_check.isdigit and data_to_check in ('1', '2'):
@@ -28,3 +30,11 @@ def check_file_path(path):
         path = input('Введите корректный путь к файлу: ')
         return check_file_path(path)
 
+
+def check_input(data_to_check):
+    if data_to_check in ('Y', 'y', 'N', 'n', 'Д', 'д', 'Н', 'н'):
+        return True
+    else:
+        rich_console(r'Не удалось распознать ответ. Введите y\д или n\н:')
+        data_to_check = input()
+        return check_input(data_to_check)
