@@ -32,6 +32,7 @@ def create_table_single_tag(data):
 def create_table_multi_tag(data):
     table = Table(  rich.table.Column(header="[yellow]Теги[/yellow]", justify='center'),
                     rich.table.Column(header="[yellow]Количество на сайте[/yellow]", justify='center'),
+                    rich.table.Column(header="[yellow]Текст в тегах[/yellow]", justify='center'),
                     title='[magenta bold]Количество некоторых тегов[/magenta bold]',
                     show_lines=True,
                     expand=False,
@@ -40,8 +41,8 @@ def create_table_multi_tag(data):
                     )
 
     for key, value in data.items():
-        if type(value) is int:
-            table.add_row(f'[#34D1B2]{key}[/#34D1B2]', f'[#34D1B2]{value}[#34D1B2]')
+        if type(value) is dict and key in ('em', 'strong', 'h1'):
+            table.add_row(f'[#34D1B2]{key}[/#34D1B2]', f'[#34D1B2]{value.get("total")}[#34D1B2]', f'[#34D1B2]{value.get("Текст")}[#34D1B2]')
     else:
         rich_console(table)
 
@@ -63,7 +64,7 @@ def create_table_tag_attr_multi(data):
         if key == 'img':
             table.add_row(
                 f"[#34D1B2]{key}[/#34D1B2]",
-                f"{data.get(key).get('total')}",
+                f"[blue]{data.get(key).get('total')}[/blue]",
                 f"[#34D1B2]alt[/#34D1B2]: [red]Нет значения - {data.get(key).get('alt').get('Not found')}[/red], "
                     f"[yellow]Пустое значение - {data.get(key).get('alt').get('Empty')}[/yellow], "
                     f"[green]Есть значение  - {data.get(key).get('alt').get('With value')}\n[/green]"
