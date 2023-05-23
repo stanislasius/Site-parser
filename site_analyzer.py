@@ -28,9 +28,49 @@ def single_tag_processor(tag_list, html_data):
 
 def multi_tag_processor(tag_list, html_data):
     tag_dict = dict()
+    em_text = list()
+    strong_text = list()
+    h1_text = list()
     for tag in tag_list:
         if len(html_data.findAll(tag)) != 0:
-            tag_dict[tag] = len(html_data.findAll(tag))
+            tag_len = len(html_data.findAll(tag))
+            if tag == 'em':
+                for text in html_data.find_all('em'):
+                    text = str(text)[4:-5]
+                    if len(text) > 0:
+                        tag_dict[tag] = {'Text': ''}
+                        if '\n' in text:
+                            text = text.replace('\n', '')
+                        if ' ' in text:
+                            text = ' '.join(text.split())
+                        em_text.append(text)
+                else:
+                    tag_dict[tag] = {'Текст': em_text}
+                    tag_dict[tag].update(total=f'{tag_len}')
+            elif tag == 'strong':
+                for text in html_data.find_all('strong'):
+                    text = str(text)[8:-9]
+                    if len(text) > 0:
+                        if '\n' in text:
+                            text = text.replace('\n', '')
+                        if ' ' in text:
+                            text = ' '.join(text.split())
+                        strong_text.append(text)
+                else:
+                    tag_dict[tag] = {'Текст': strong_text}
+                    tag_dict[tag].update(total=f'{tag_len}')
+            elif tag == 'h1':
+                for text in html_data.find_all('h1'):
+                    text = str(text)[4:-5]
+                    if len(text) > 0:
+                        if '\n' in text:
+                            text = text.replace('\n', '')
+                        if ' ' in text:
+                            text = ' '.join(text.split())
+                        h1_text.append(text)
+                else:
+                    tag_dict[tag] = {'Текст': h1_text}
+                    tag_dict[tag].update(total=f'{tag_len}')
         else:
             tag_dict[tag] = False
     return tag_dict
