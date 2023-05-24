@@ -1,14 +1,17 @@
 import json
-import site_analyzer
-import verifications
 import os
 from sys import exit
-import table_creator
 from rich.console import Console
+import time
+
+import site_analyzer
+import verifications
+import table_creator
+import formula_expression
 
 rich_console = Console().print
 
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 
 def main():
@@ -16,11 +19,11 @@ def main():
                        'form', 'label', 'table', 'caption', 'h2', 'h3', 'h4', 'h5', 'h6',
                        'thead', 'tbody', 'tfoot', 'th', 'tr', 'td')
     tag_list_multi = ('h1', 'strong', 'em')
-    tag_list_multi_with_attr = ({'input': ('name', 'id', 'type', 'value')},
+    tag_list_multi_with_attr = ({'input': ('name', 'id', 'type', 'placeholder')},
                                 {'img': ('alt', 'title')}, {'ul': 'li', 'ol': 'li'})
 
     rich_console("Укажите, откуда брать данные для анализа сайта?", style='yellow')
-    rich_console("[yellow]Если с сайта, то введите - 1[/yellow], если [cyan]из файла - введите 2[/cyan]: ")
+    rich_console("Если [yellow]с сайта, то введите - 1[/yellow], если [cyan]из файла - введите 2[/cyan]: ")
     user_input = verifications.check_user_input_source(input())
     if user_input == '1':
         rich_console('Введите URL сайта, который нужно проанализировать: ', style='yellow')
@@ -59,9 +62,9 @@ def main():
 
     rich_console("[yellow]Сохранить результат анализа как json файл?[/yellow] "
                  "[bold red]Cуществующий файл будет перезаписан! [/bold red]"
-                 "[yellow]Введите [green]y|д[/green] или [red]n|н[/red]:[/yellow] ")
+                 "[yellow]Введите [green]yes|да[/green] или [red]no|нет[/red]:[/yellow] ")
     save_file = verifications.check_input(input())
-    if save_file.lower() in ('y', 'д'):
+    if save_file.lower() in ('yes', 'да'):
         json_object = json.dumps(html_data)
 
         file = open('result.json', 'w')
@@ -70,35 +73,40 @@ def main():
 
         rich_console(f'HTML-код разложен по тегам в файл [cyan]result.json[/cyan] по пути {os.getcwd()}', style='yellow')
 
-    rich_console(f'Анализатор закончил работу.\nЗапустить новый анализ? Введите [green]y|д[/green] или [red]n|н[/red]:')
+    formula_expression.formula(html_data)
+
+    rich_console(f'Анализатор закончил работу.\nЗапустить новый анализ? Введите '
+                 f'[green]yes|да[/green] или [red]no|нет[/red]:')
     new_start = verifications.check_input(input()).lower()
-    if new_start in ('y', 'д'):
+    if new_start in ('yes', 'да'):
 
         rich_console('Произвести очистку консольного окна перед началом нового анализа? '
-                     'Введите [green]y|д[/green] или [red]n|н[/red]:', style='yellow')
+                     'Введите [green]yes|да[/green] или [red]no|нет[/red]:', style='yellow')
 
-        if verifications.check_input(input()) in ('y', 'д'):
+        if verifications.check_input(input()) in ('yes', 'да'):
             os.system('cls')
         main()
 
-    elif new_start in ('n', 'н'):
-        rich_console('В таком случае анализатор завершает свою работу.\n '
+    elif new_start in ('no', 'нет'):
+        rich_console('В таком случае анализатор завершает свою работу. \n'
                      'Нажмите Enter для закрытия консольного окна...', style='yellow')
         input()
         exit()
 
 
 try:
-    rich_console(f'Начать анализ HTML-кода? Введите [green]y|д[/green] или [red]n|н[/red]:', style='yellow')
+    rich_console(f'Начать анализ HTML-кода? Введите [green]yes|да[/green] или [red]no|нет[/red]:', style='yellow')
     start = verifications.check_input(input()).lower()
-    if start in ('y', 'д'):
+    if start in ('yes', 'да'):
         main()
-    elif start in ('n', 'н'):
+    elif start in ('no', 'нет'):
         rich_console('В таком случае анализатор завершает свою работу.\n'
                      'Нажмите Enter для закрытия консольного окна...', style='red')
         input()
         exit()
 except KeyboardInterrupt:
+    rich_console('Закрытие программы. Причина: нажатие сочетания клавиш CTRL+C', style='red')
+    time.sleep(5)
     exit()
 
 
