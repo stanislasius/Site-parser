@@ -5,9 +5,9 @@ import web_handler
 
 def parser_source(source, data):
     if source == 'site':
-        if web_handler.check_site(data):
-            response = requests.get(data, allow_redirects=True)
-            data = bs4.BeautifulSoup(response.text, 'html5lib')
+        data = web_handler.check_site(data)
+        response = requests.get(data, allow_redirects=True)
+        data = bs4.BeautifulSoup(response.text, 'html5lib')
     elif source == 'file':
         file = open(data, 'r', encoding='utf-8')
         data = bs4.BeautifulSoup(file, 'html5lib')
@@ -124,8 +124,8 @@ def multi_tag_with_attr_processor(tag_list, html_data):
         elif 'img' in tag_dict.keys():
             imgs_dict = {value: {'Empty': 0, 'With value': 0, 'Not found': 0}
                          for values in tag_dict.values() for value in values}
-            imgs_data_alt = html_data.find_all('img', alt = True)
-            imgs_data_alt_noalt = html_data.find_all('img', alt = False)
+            imgs_data_alt = html_data.find_all('img', alt=True)
+            imgs_data_alt_noalt = html_data.find_all('img', alt=False)
 
             imgs_dict['alt']['Not found'] += len(imgs_data_alt_noalt)
 
