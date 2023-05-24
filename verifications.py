@@ -6,9 +6,9 @@ rich_console = Console().print
 
 
 def check_user_input_source(data_to_check):
-    if data_to_check.isdigit and data_to_check in ('1', '2'):
+    if data_to_check.isdigit() and data_to_check in ('1', '2'):
         return data_to_check
-    elif data_to_check.isdigit is False or data_to_check not in ('1', '2'):
+    elif data_to_check.isdigit() is False or data_to_check not in ('1', '2'):
         rich_console('Указано неверное значение. Пожалуйста, укажите откуда брать информацию для анализа.')
         rich_console('Введите [cyan]1[/cyan], если нужно проанализировать HTML-код с сайта, '
                      'или введите [cyan]2[/cyan], если нужно считать из файла: ', style='yellow')
@@ -21,7 +21,7 @@ def check_site_address(data_to_check):
         return data_to_check
     else:
         rich_console('Введён неверный URL сайта.', style='yellow')
-        rich_console('Пожалуйста, введите верный (пример: https://google.com): ', style='cyan')
+        rich_console('Пожалуйста, введите верный адрес сайта (пример: https://google.com): ', style='cyan')
         data_to_check = input()
         return check_site_address(data_to_check)
 
@@ -37,10 +37,10 @@ def check_file_path(path):
 
 
 def check_input(data_to_check):
-    if data_to_check in ('Y', 'y', 'Д', 'д'):
+    if data_to_check in ('yes', 'да'):
         return data_to_check
-    elif data_to_check in ('N', 'n', 'Н', 'н'):
+    elif data_to_check in ('no', 'нет'):
         return data_to_check
     else:
-        rich_console('Не удалось распознать ответ. Введите [green]y|д[/green] или [red]n|н[/red]:', style='yellow')
+        rich_console('Не удалось распознать ответ. Введите [green]yes|да[/green] или [red]no|нет[/red]:', style='yellow')
         return check_input(input())
