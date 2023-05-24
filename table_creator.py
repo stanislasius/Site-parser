@@ -89,9 +89,9 @@ def create_table_tag_attr_multi(data):
                     f"[yellow]Пустое значение - {data.get(key).get('type').get('Empty')}[/yellow], "
                     f"[green]Есть значение  - {data.get(key).get('type').get('With value')}[/green]\n"
                 
-                f"[#34D1B2]value[/#34D1B2]: [red]Нет значения - {data.get(key).get('value').get('Not found')}[/red], "
-                    f"[yellow]Пустое значение - {data.get(key).get('value').get('Empty')}[/yellow], "
-                    f"[green]Есть значение  - {data.get(key).get('value').get('With value')}[/green]")
+                f"[#34D1B2]value[/#34D1B2]: [red]Нет значения - {data.get(key).get('placeholder').get('Not found')}[/red], "
+                    f"[yellow]Пустое значение - {data.get(key).get('placeholder').get('Empty')}[/yellow], "
+                    f"[green]Есть значение  - {data.get(key).get('placeholder').get('With value')}[/green]")
 
     rich_console(table)
 
