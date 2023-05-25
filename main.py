@@ -15,6 +15,8 @@ __version__ = '1.0.1'
 
 
 def main():
+    """основной код программы"""
+
     tag_list_single = ('header', 'nav', 'main', 'article', 'section', 'aside', 'footer',
                        'form', 'label', 'table', 'caption', 'h2', 'h3', 'h4', 'h5', 'h6',
                        'thead', 'tbody', 'tfoot', 'th', 'tr', 'td')
@@ -33,6 +35,7 @@ def main():
         multi_tag = site_analyzer.multi_tag_processor(tag_list_multi, site_data)
         multi_tag_attr = site_analyzer.multi_tag_with_attr_processor(tag_list_multi_with_attr, site_data)
 
+        # объединяем словари, нужно для построения таблицы и для формулы
         html_data = dict()
         html_data |= single_tag
         html_data |= multi_tag
@@ -51,6 +54,7 @@ def main():
         multi_tag = site_analyzer.multi_tag_processor(tag_list_multi, site_data)
         multi_tag_attr = site_analyzer.multi_tag_with_attr_processor(tag_list_multi_with_attr, site_data)
 
+        # объединяем словари, нужно для построения таблицы и для формулы
         html_data = dict()
         html_data |= single_tag
         html_data |= multi_tag
@@ -63,6 +67,7 @@ def main():
     rich_console("[yellow]Сохранить результат анализа как json файл?[/yellow] "
                  "[bold red]Cуществующий файл будет перезаписан! [/bold red]"
                  "[yellow]Введите [green]yes|да[/green] или [red]no|нет[/red]:[/yellow] ")
+
     save_file = verifications.check_input(input())
     if save_file.lower() in ('yes', 'да'):
         json_object = json.dumps(html_data)
@@ -71,7 +76,8 @@ def main():
         file.write(json_object)
         file.close()
 
-        rich_console(f'HTML-код разложен по тегам в файл [cyan]result.json[/cyan] по пути {os.getcwd()}', style='yellow')
+        rich_console(f'HTML-код разложен по тегам в файл [cyan]result.json[/cyan] по пути {os.getcwd()}',
+                     style='yellow')
 
     formula_expression.formula(html_data)
 
@@ -104,9 +110,9 @@ try:
                      'Нажмите Enter для закрытия консольного окна...', style='red')
         input()
         exit()
+
+# реагируем на нажатие CTRL+C (станд.сочетание клавиш для прекращения работы консольного приложения)
 except KeyboardInterrupt:
     rich_console('Закрытие программы. Причина: нажатие сочетания клавиш CTRL+C', style='red')
     time.sleep(5)
     exit()
-
-

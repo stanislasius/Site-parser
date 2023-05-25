@@ -5,7 +5,11 @@ from rich.console import Console
 rich_console = Console().print
 
 
-def create_table_single_tag(data):
+def create_table_single_tag(data: dict):
+    """Функция создания таблицы на основании переданных данных.
+    :param data: словарь, на основании данных из которого будет создаваться таблица
+    """
+
     table = Table(  rich.table.Column(header="[yellow]Теги, которые есть на сайте[/yellow]", justify='center'),
                     rich.table.Column(header="[yellow]Теги, которых нет на сайте[/yellow]", justify='center'),
                     title='[magenta bold]Анализ сайта на наличие определённых тегов[/magenta bold]',
@@ -29,7 +33,11 @@ def create_table_single_tag(data):
     return
 
 
-def create_table_multi_tag(data):
+def create_table_multi_tag(data: dict):
+    """Функция для создания таблицы для тегов em, strong, h1.
+    :param data: Словарь, на основании данных из которого будет создаваться таблица
+    """
+
     table = Table(  rich.table.Column(header="[yellow]Теги[/yellow]", justify='center'),
                     rich.table.Column(header="[yellow]Количество на сайте[/yellow]", justify='center'),
                     rich.table.Column(header="[yellow]Текст в тегах[/yellow]", justify='center'),
@@ -49,7 +57,11 @@ def create_table_multi_tag(data):
     return
 
 
-def create_table_tag_attr_multi(data):
+def create_table_tag_attr_multi(data: dict):
+    """Функция создания таблицы для тегов img, input на основании переданных данных.
+    :param data: словарь, на основании данных из которого будет создаваться таблица
+    """
+
     table = Table(  rich.table.Column(header="[yellow]Тег[/yellow]", justify='center'),
                     rich.table.Column(header="[yellow]Всего тегов[/yellow]", justify='center'),
                     rich.table.Column(header="[yellow]Аттрибуты тега и их количество[/yellow]", justify='center'),

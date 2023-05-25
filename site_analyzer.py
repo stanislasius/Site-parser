@@ -4,6 +4,10 @@ import web_handler
 
 
 def parser_source(source, data):
+    """Функция для определения источника полученных данных
+    :param source: источник данных
+    :param data: данные для парсинга с помощью bs4(beautifulsoup4)"""
+
     if source == 'site':
         data = web_handler.check_site(data)
         response = requests.get(data, allow_redirects=True)
@@ -17,6 +21,10 @@ def parser_source(source, data):
 
 
 def single_tag_processor(tag_list, html_data):
+    """Функция для обработки тегов на наличие/отсутствие оных
+    :param tag_list: список тегов, по которым нужно провести анализ
+    :param html_data: html-код для анализа"""
+
     tag_dict = dict()
     for tag in tag_list:
         if html_data.find(tag) is not None:
@@ -27,13 +35,20 @@ def single_tag_processor(tag_list, html_data):
 
 
 def multi_tag_processor(tag_list, html_data):
+    """Функция для обработки тегов em, strong, h1. На вход принимает:
+    :param tag_list: список тегов, по которым нужно провести анализ
+    :param html_data: html-код для анализа"""
+
     tag_dict = dict()
     em_text = list()
     strong_text = list()
     h1_text = list()
+
     for tag in tag_list:
+        # находим все упоминания нужного tag во всём html-коде
         if len(html_data.findAll(tag)) != 0:
             tag_len = len(html_data.findAll(tag))
+            # получаем текст, который "обёрнут" в соответствующие теги
             if tag == 'em':
                 for text in html_data.find_all('em'):
                     text = str(text)[4:-5]
@@ -72,11 +87,16 @@ def multi_tag_processor(tag_list, html_data):
                     tag_dict[tag] = {'Текст': h1_text}
                     tag_dict[tag].update(total=f'{tag_len}')
         else:
+            # если тег не был найден
             tag_dict[tag] = False
     return tag_dict
 
 
 def multi_tag_with_attr_processor(tag_list, html_data):
+    """Функция для обработки тегов input, img, ol|ul. На вход принимает:
+    :param tag_list: список тегов, по которым нужно провести анализ
+    :param html_data: html-код для анализа"""
+
     tags_dict = dict()
 
     for tag_dict in tag_list:
@@ -88,6 +108,7 @@ def multi_tag_with_attr_processor(tag_list, html_data):
                 uls_ols = html_data.findAll(key)
 
                 for list_data in uls_ols:
+                    # так как li может в части слова, то "уточняем" тег
                     if f'<{value}' in str(list_data):
                         with_li += 1
                     else:
@@ -117,9 +138,9 @@ def multi_tag_with_attr_processor(tag_list, html_data):
                             attr_dict[attr]['Not found'] += 1
 
                 input_dict.update(total=len(tags_data))
+            # объединяем словари после работы основого цикла
             input_dict |= attr_dict
-
-            tags_dict.update(input = input_dict)
+            tags_dict.update(input=input_dict)
 
         elif 'img' in tag_dict.keys():
             imgs_dict = {value: {'Empty': 0, 'With value': 0, 'Not found': 0}
